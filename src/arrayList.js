@@ -172,5 +172,111 @@ export default class ArrayList {
     this.quickSortRec(left, i - 1)
     this.quickSortRec(i + 1, right)
   }
+
+  // 归并排序
+  // 归并排序 mergeSort() 递归调用，分：用来将序列逐次二分
+  mergeSort(arr = this.array, low = 0, high = this.array.length-1) {
+
+    // 1.直到每个子序列只剩一个元素时，直接返回，不需merge合并（因为只有一个元素可以看作已经排好）
+    if (low === high) return
+    // 2.得到二分的中间值，即分出来左边组的最后一个元素的位置
+    const mid = Math.floor((low + high) / 2)
+
+    // 递归调用，arr是已经二分过的序列
+    this.mergeSort(arr, low, mid) // 左边组一直递归二分
+    this.mergeSort(arr, mid + 1, high) // 右边组一直递归二分
+    // 将二分出来的子序列合并，low!=high，即子序列起码有两个元素
+    this.merge(arr, low, high)
+    return arr
+  }
+
+  // merge() 递归调用，治：用来排序合并分出来的数组
+  merge(arr, low, high) {
+    // 1.定义变量，mid中间值（二分组时分出两个组，左边组A的最后一个元素的位置），left左边组A的第一个元素位置，right右边组B的第一个元素位置
+    const mid = Math.floor((low + high) / 2)
+    let left = low
+    let right = mid + 1
+
+    // 2.创建空数组用来临时存放合并的子序列
+    const result = []
+
+    // 3.A、B都没有排完
+    while (left <= mid && right <= high) { // 循环比较，A的元素和B的元素
+      if (arr[left] <= arr[right]) { // 哪一个小就push哪一个
+        result.push(arr[left++])
+      } else {
+        result.push(arr[right++])
+      }
+    }
+
+    // 经过上面循环，A还没排完，将A的依次push
+    while (left <= mid) {
+      result.push(arr[left++])
+    }
+    // 经过上面循环，B还没排完，将B的依次push
+    while (right <= high) {
+      result.push(arr[right++])
+    }
+
+    // 将临时存储的排好的序列替换原来的序列
+    arr = arr.splice(low, high - low + 1, ...result)
+  }
+
+  // heapSort() 堆排序
+  /**
+  * @description maxHeapify() 大顶堆调整：从 index 开始检查并保持大顶堆性质
+  * @index 检查的起始下标
+  * @size 堆大小
+  **/
+  maxHeapify(index, size = this.array.length) {
+    // 如果index比最后一个元素的index大就直接返回
+    if (index >= size) return
+    //把当前父节点位置看成是最大的
+    let max = index
+    //左子树和右子树的位置
+    let left = 2 * index + 1
+    let right = 2 * (index + 1)
+    // 节点的index最大为size-1
+    if (left < size && this.array[max] < this.array[left]) {
+      max = left
+    }
+    if (right < size && this.array[max] < this.array[right]) {
+      max = right
+    }
+
+    // 如果max不是根元素位置，哪么就交换
+    if (max != index) {
+      this.swap(max, index)
+
+      // 交换后，被交换的子节点下面的子树可能就不满足大顶堆条件，所以要继续比较，直到分支到叶子节点都满足条件
+      this.maxHeapify(max, size)
+    }
+  }
+
+  /**
+  * @description buildHeap(arr) 创建堆，其实是对数组做一个结构调整，使其具有堆的特性
+  */
+  buildHeap() {
+    let length = this.array.length
+    // 得到最后一个有子节点的父节点
+    let index = Math.floor((length - 1) / 2)
+    // 从最后一个父节点倒着遍历到根节点
+    for (let i = index; i >= 0; i--) { // 从0到最后一个父节点都要进行heapify，才能把最大的那个节点换到根节点
+      this.maxHeapify(i, length)
+    }
+  }
+
+  /**
+  * @description heapSort() 移除在堆顶的根节点，并做大顶堆调整的迭代运算
+  **/
+  heapSort() {
+    this.buildHeap()
+    let length = this.array.length
+    for (let i = length - 1; i > 0; i--) {
+      this.swap(i, 0)
+      //当前树中最后一个节点已经排好了值，后面就不用再考虑这个节点，故新的树的大小减一
+      this.maxHeapify(0, --length)
+    }
+  }
 }
 

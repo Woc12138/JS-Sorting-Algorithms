@@ -30,7 +30,13 @@ console.log(list) // [3, 6, 4, 2, 11, 10, 5]
 // console.log(list) // [2, 3, 4, 5, 6, 10, 11]
 
 // 快速排序 quickSort() 测试
-list.quickSort()
+// list.quickSort()
+// console.log(list) // [2, 3, 4, 5, 6, 10, 11]
+
+// 归并排序 mergeSort() 测试
+// list.mergeSort()
+// console.log(list) // [2, 3, 4, 5, 6, 10, 11]
+
+// 堆排序 heapSort() 测试
+list.heapSort()
 console.log(list) // [2, 3, 4, 5, 6, 10, 11]
-
-
