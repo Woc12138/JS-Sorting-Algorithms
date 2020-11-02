@@ -26,7 +26,7 @@ console.log(list) // [3, 6, 4, 2, 11, 10, 5]
 // console.log(list) // [2, 3, 4, 5, 6, 10, 11]
 
 // 希尔排序 shellSort() 测试
-// list.insertSort()
+// list.shellSort()
 // console.log(list) // [2, 3, 4, 5, 6, 10, 11]
 
 // 快速排序 quickSort() 测试

@@ -155,8 +155,8 @@ export default class ArrayList {
 
     while (true) {
       // 4.开始循环，查找位置
-      while (this.array[++i] < pivot) {} // ++i直接从left的后一个和right-1的前一个开始找
-      while (this.array[--j] > pivot) {} // while循环里不需要任何操作，一直找，直到不符合条件就会跳出循环
+      while (this.array[i] < pivot) {i++} // ++i直接从left的后一个和right-1的前一个开始找
+      while (this.array[j] > pivot) {j--} // while循环里不需要任何操作，一直找，直到不符合条件就会跳出循环
       
       if (i < j) { // i < j说明两个指向还没有相遇过
         this.swap(i, j)
@@ -166,6 +166,8 @@ export default class ArrayList {
     }
 
     // 5.将枢纽放在正确的位置
+    // 将i位置的值与pivot交换，不能是j位置的
+    // 因为i只要一找到比pivot大的就立马跳出循环了；而j有可能指向的是i的前一个比pivot小的
     this.swap(i, right - 1)
 
     // 6.分而治之：递归调用左边一组和右边一组
